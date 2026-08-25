@@ -1,7 +1,8 @@
-#include "filehasher.h"
+/* filehasher.c */
+#include "sig_dec_ver/filehasher.h"
 #include <stdio.h>
 
-#define FH_CHUNK 65536
+#define FH_CHUNK 16384
 
 int hashSHA256(const char *path, unsigned char out[crypto_hash_sha256_BYTES])
 {
