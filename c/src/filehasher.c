@@ -1,10 +1,23 @@
 /* filehasher.c */
-#include "sig_dec_ver/filehasher.h"
+#include "sdv/filehasher.h"
+
+#include <sodium.h>
 #include <stdio.h>
+#include <string.h>
+
+/* If libsodium ever disagrees with the public constant, fail at compile time
+ * rather than overflowing the caller's buffer at run time. */
+_Static_assert(SDV_SHA256_BYTES == crypto_hash_sha256_BYTES,
+               "SDV_SHA256_BYTES disagrees with crypto_hash_sha256_BYTES");
+
+int sdv_init(void)
+{
+    return sdv_ensure_init();
+}
 
 #define FH_CHUNK 16384
 
-int hashSHA256(const char *path, unsigned char out[crypto_hash_sha256_BYTES])
+int sdv_hash_sha256(const char *path, unsigned char out[crypto_hash_sha256_BYTES])
 {
     FILE *f = fopen(path, "rb");          /* "b" matters on Windows */
     if (!f)
