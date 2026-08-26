@@ -1,8 +1,12 @@
 /* filehasher.c */
 #include "sdv/filehasher.h"
+#include "sha256.h"
 
 #include <string.h>
 
+/* The public header hardcodes 32 so it does not have to expose sha256.h.
+   Fail the build here if the two ever disagree. */
+typedef char sdv_digest_len_check[(SDV_SHA256_LEN == SHA256_BLOCK_SIZE) ? 1 : -1];
 
 /* Read size. Any value is correct; 32 KiB is a good trade-off between
    syscall count and stack usage. It also keeps every single call to

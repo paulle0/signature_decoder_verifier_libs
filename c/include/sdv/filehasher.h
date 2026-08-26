@@ -3,17 +3,16 @@
 #define SDV_FILEHASHER_H
 
 #include <stdio.h>
-#include "sha256.h"
  
-/* SHA256_BLOCK_SIZE from sha256.h is 32 = the digest length in bytes.
-   Aliased here under a clearer name. */
-#define SDV_SHA256_LEN SHA256_BLOCK_SIZE
+/* SHA-256 digest length in bytes. filehasher.c static-asserts that this
+   still matches the backing implementation. */
+#define SDV_SHA256_LEN 32
  
 /* Digest returned by value, so there is nothing to free and no output
    parameter. `ok` is 0 if the stream could not be read completely, in
    which case `bytes` is all zeroes and must not be used. */
 typedef struct {
-	BYTE bytes[SDV_SHA256_LEN];
+	unsigned char bytes[SDV_SHA256_LEN];
 	int  ok;
 } sdv_sha256_t;
  
