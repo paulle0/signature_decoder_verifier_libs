@@ -1,0 +1,4 @@
+# Build output
+c/build/
+*.o
+*.a
