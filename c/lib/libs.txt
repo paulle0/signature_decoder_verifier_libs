@@ -1,0 +1,1 @@
+libsodium is included as .so

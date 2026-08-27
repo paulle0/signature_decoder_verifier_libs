@@ -1,0 +1,13 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# libsodium is a PUBLIC dependency of the static archive, so consumers must
+# resolve it too. FindSodium.cmake is installed next to this file.
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+find_dependency(Sodium)
+list(REMOVE_AT CMAKE_MODULE_PATH -1)
+
+include("${CMAKE_CURRENT_LIST_DIR}/sdvTargets.cmake")
+
+check_required_components(sdv)

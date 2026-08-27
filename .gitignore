@@ -1,4 +1,8 @@
 # Build output
+# Build output
 c/build/
+c/build*/
+cmake-build-*/
+CMakeUserPresets.json
 *.o
 *.a
