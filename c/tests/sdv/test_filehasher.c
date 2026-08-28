@@ -4,24 +4,24 @@
 #include <stdio.h>
 #include <string.h>
 
-/* Digests of "Hello world!" -- 12 bytes, no trailing newline. */
+/* Digests of "Hello world!\n" -- 13 bytes, trailing newline included. */
 #define EXPECTED_HELLO \
-	"c0535e4be2b79ffd93291305436bf889314e4a3faec05ecffcbb7df31ad9e51a"
-#define EXPECTED_HELLO_B2_256 \
-	"3fbc092db9350757e2ab4f7ee9792bfcd2f5220ada5a4bc684487f60c6034369"
-#define EXPECTED_HELLO_B2_512 \
-	"0389abc5ab1e8e170e95aff19d341ecbf88b83a12dd657291ec1254108ea9735" \
-	"2c2ff5116902b9fe4021bfe5a6a4372b0f7c9fc2d7dd810c29f85511d1e04c59"
-
-/* Digests of the same text with a trailing newline; only used to give a
-   better message when the fixture got mangled on checkout. */
-#define EXPECTED_HELLO_NL \
 	"0ba904eae8773b70c75333db4de2f3ac45a8ad4ddba1b242f0b3cfc199391dd8"
-#define EXPECTED_HELLO_NL_B2_256 \
+#define EXPECTED_HELLO_B2_256 \
 	"ca57d5b2364b0e3660f8dd44eafed7455b7ba59e3652309b45475edd9aaa1eeb"
-#define EXPECTED_HELLO_NL_B2_512 \
+#define EXPECTED_HELLO_B2_512 \
 	"5c5ce11923c07698f54cf30196efb3b038b44a77046fbabbdf3f2c2a924e1008" \
 	"1e5f79cb4cd562f5590dc917c67fc0cdfaec0a992469e5cd0b3f7d1c249f9015"
+
+/* Digests of the same text without the trailing newline; only used to give
+   a better message when the fixture got mangled on checkout. */
+#define EXPECTED_HELLO_NONL \
+	"c0535e4be2b79ffd93291305436bf889314e4a3faec05ecffcbb7df31ad9e51a"
+#define EXPECTED_HELLO_NONL_B2_256 \
+	"3fbc092db9350757e2ab4f7ee9792bfcd2f5220ada5a4bc684487f60c6034369"
+#define EXPECTED_HELLO_NONL_B2_512 \
+	"0389abc5ab1e8e170e95aff19d341ecbf88b83a12dd657291ec1254108ea9735" \
+	"2c2ff5116902b9fe4021bfe5a6a4372b0f7c9fc2d7dd810c29f85511d1e04c59"
 
 /* Digests of the empty stream. */
 #define EXPECTED_EMPTY \
@@ -62,11 +62,11 @@ static void test_file(const char *path)
 	static const struct {
 		const char *what;
 		const char *want;
-		const char *want_nl;
+		const char *want_nonl;
 	} cases[] = {
-		{ "sha256 of test.txt",       EXPECTED_HELLO,        EXPECTED_HELLO_NL        },
-		{ "blake2b-256 of test.txt",  EXPECTED_HELLO_B2_256, EXPECTED_HELLO_NL_B2_256 },
-		{ "blake2b-512 of test.txt",  EXPECTED_HELLO_B2_512, EXPECTED_HELLO_NL_B2_512 },
+		{ "sha256 of test.txt",       EXPECTED_HELLO,        EXPECTED_HELLO_NONL        },
+		{ "blake2b-256 of test.txt",  EXPECTED_HELLO_B2_256, EXPECTED_HELLO_NONL_B2_256 },
+		{ "blake2b-512 of test.txt",  EXPECTED_HELLO_B2_512, EXPECTED_HELLO_NONL_B2_512 },
 	};
 	size_t i;
 
@@ -103,9 +103,9 @@ static void test_file(const char *path)
 
 		check_hex(cases[i].what, hex, cases[i].want);
 
-		if (strcmp(hex, cases[i].want_nl) == 0)
-			printf("        hint: %s has a trailing newline; it must hold\n"
-			       "        exactly the 12 bytes \"Hello world!\"\n", path);
+		if (strcmp(hex, cases[i].want_nonl) == 0)
+			printf("        hint: %s is missing its trailing newline; it must\n"
+			       "        hold exactly the 13 bytes \"Hello world!\\n\"\n", path);
 	}
 }
 
