@@ -5,8 +5,8 @@
 #   ctest --test-dir build           run the tests
 #   rm -rf build                     "make clean"
 #
-# SHA-256 comes from libsodium, linked dynamically. Install the development
-# package before configuring:
+# SHA-256 and BLAKE2b both come from libsodium, linked dynamically. Install the
+# development package before configuring:
 #
 #   Debian/Ubuntu   apt-get install libsodium-dev
 #   Fedora/RHEL     dnf install libsodium-devel
